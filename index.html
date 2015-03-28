@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Pr5</title>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<title>Data Visualization of FIFA Development Projects</title>
+<!--This css file need for my github page project-->
+<script type="text/javascript" src="js/bootstrap.min.js"></script> 
+<link rel="stylesheet" href="css/bootstrap.min.css" />
 <script type="text/javascript" src="js/d3.min.js"></script>
 <script type="text/javascript" src="js/d3.fifa.js"></script>
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/queue.v1.min.js"></script>
 <script type="text/javascript" src="js/topojson.v1.min.js"></script>  
 <script type="text/javascript" src="js/d3.tip.v0.6.3.js"></script>
-<link rel="stylesheet" href="css/bootstrap.min.css" />
+
 <link rel="stylesheet" href="css/fifa.css" />
 
 <script>
-$(document).ready(function(e) {
-//	
+$(document).ready(function(e) {	
 SvgModule.init();
 $(".tab").on("click", SvgModule.selectGraph);
 $("#sort_by").on("change", SvgModule.selectGraph);
@@ -23,6 +24,33 @@ $("#play_button").on("click", SvgModule.playButtonHandler);
 </script>
 </head>
 <body>
+<h2>Data Visualization of FIFA Development Projects</h2>
+
+For this project, I've created a data visualization from the Goal programme data set of FIFA developments projects.
+<p> 
+The Goal Programme enables beneficiary member associations to implement projects designed to develop football in their countries. 
+It is an expression of solidarity that gives national associations with few resources at their disposal the tools they need to function and grow.
+</p>
+
+*Information from FIFA official website http://www.fifa.com/aboutfifa/footballdevelopment/projects/goalprogramme/
+<p>
+The Goal Programme supports the following classes of projects:
+</p>
+<ul>
+<li>Headquarters</li>
+<li>Technical centre</li>
+<li>Football pitch</li>
+<li>Football academy (including creation of youth academies)</li>
+<li>IT projects (modernisation of national association computer systems)</li>
+<li>Other</li>
+</ul>
+<p>
+I've divided my visualization on 4 tabs. On the first one you can explore overview of all projects by country.
+On the others stored additional information which may explain some details of investments. 
+</p>
+<p>
+Just press Play FIFA story button on the first tab to figure out most important points about Goal programme.
+</p>
 <div class="tabs">
 	<div class="sel">Choose a graph</div>
 	<div class="tab active" id="country">Budget by<br>country</div>

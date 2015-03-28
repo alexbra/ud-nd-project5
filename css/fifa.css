@@ -9,6 +9,9 @@
 .q7-9 { fill:#386890; }
 .q8-9 { fill:#315b7d; }	
 
+body{
+padding-left:20px;
+}
 
 .bar:hover {
   fill: #ccc;

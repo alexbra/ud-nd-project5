@@ -2,11 +2,19 @@
 SvgModule contains the following methods. 
 
 public methods.
+- init - init of visualization
+- selectGraph - handler of selecting tabs and dropdowns
+- playButtonHandler - handler of play button on firts tab
 
 private methods. 
-
-
-
+- ready - preload of all data files by queue function
+- showStoryElement - show elements on map after mouseover events or pressed play button
+- hideStoryElement 
+- initPlayBack 
+- drawChoropleth
+- drawSmallBarChart
+- drawBarChart
+- drawStackedBarChart
 
 */
 var SvgModule = (function () {
@@ -17,13 +25,19 @@ var SvgModule = (function () {
 		drawChoropleth, 
 		drawBarChart, 
 		drawStackedBarChart,
+		drawSmallBarChart,
 		initPlayBack,
+		hideStoryElement,
+		playButtonHandler,
+		showStoryElement,
 		curTab,
 		curSortType,
 		visType,
 		ready,
 		fifa_all_projects,
-		fifa_by_country_wide,
+		fifa_by_country,
+		fifa_by_region,
+		fifa_by_class,
 		world_countries,
 		topCountries,
 		topProjects,
@@ -53,16 +67,16 @@ var SvgModule = (function () {
 	
 	//text formats
 	var text_format = d3.format(".2s"); //millions
-	var text_format_long = d3.format(".2d"); //long format 
+	var text_format_long = d3.format(",d"); //long format 
 	
-	//sort function
+	//sort functions
 	var sortItemsBudget = function(a,b) { return +b.TotalBudget - +a.TotalBudget }
 	var sortItemsNumbers = function(a,b) { return +b.n - +a.n }
 	
+	//prjection and path for choropleth
 	var projection = d3.geo.mercator()
 						   .scale(120)
 						   .translate([width / 1.3, height / 1.25]);
-
 	var path = d3.geo.path().projection(projection);
 		
 	init = function(){
@@ -83,7 +97,7 @@ var SvgModule = (function () {
 			.attr("width", width + margin.left + margin.right)
 			.attr("height", height + margin.top + margin.bottom);
 		
-		//Tips по умолчанию
+		//tips div containers
 		div_map_tip = d3.select("body").append("div")   
 			.attr("class", "tooltip")               
 			.style("opacity", 0);	
@@ -100,7 +114,7 @@ var SvgModule = (function () {
 			.style("text-align", "left")
 			.style("width", "300px");
 			
-		//ѕараметры по-умолчанию дл€ всех BarCharts. ѕри использовании мы будем их наследовать и измен€ть необходимые параметры
+		//default parameters for all BarCharts. To customize it I'll use inheriting
 		barChartParams = {  "width" : width,
 							"height" : height,
 							"xFeature" : "TotalBudget",
@@ -115,25 +129,28 @@ var SvgModule = (function () {
 							"sortItems" : sortItemsBudget,
 							"labelBar": "id"
 						}
+		//custom parameters objects for every type of bar charts
 		paramsClassChart.__proto__ = barChartParams;
 		paramsRegionChart.__proto__ = barChartParams;
 		paramsTopCountriesChart.__proto__ = barChartParams;
 		paramsTopProjectsChart.__proto__ = barChartParams;
 	}
 	
+	//preload all data files
 	ready = function(error, file1, file2, file3, file4, file5, file6){
 		fifa_all_projects = file1;
-		fifa_by_country_wide = file2;
+		fifa_by_country = file2;
 		world_countries = file3;
 		fifa_by_class = file4;
-		fifa_by_region_wide = file5;
+		fifa_by_region = file5;
 		storyline = file6;
 		budgetById = d3.map();
-		for(var i=0;i<fifa_by_country_wide.length;i++){
-			budgetById.set(fifa_by_country_wide[i].id, +fifa_by_country_wide[i].TotalBudget);
+		for(var i=0;i<fifa_by_country.length;i++){
+			budgetById.set(fifa_by_country[i].id, +fifa_by_country[i].TotalBudget);
 		}		
-		topCountries = fifa_by_country_wide.sort(sortItemsBudget).slice(0,15);
+		topCountries = fifa_by_country.sort(sortItemsBudget).slice(0,15);
 		topProjects = fifa_all_projects.sort(sortItemsBudget).slice(0,15);
+		
 		drawChoropleth();
 	}
 	
@@ -145,10 +162,11 @@ var SvgModule = (function () {
 			$(this).addClass("active")
 			$("#sort_div select option[value='TotalBudget']").attr("selected", true);
 		}
-		clearInterval(myInterval);
-		curSortType = $("#sort_by").val();
-		visType = $(".tabs div.tab.active").first().attr("id");
-		d3.selectAll(".chart > *").remove();
+		
+		clearInterval(myInterval); //stop playing story if tab clicked
+		curSortType = $("#sort_by").val(); //select type of sort
+		visType = $(".tabs div.tab.active").first().attr("id"); //select type of plot
+		d3.selectAll(".chart > *").remove(); 
 		
 		switch(visType){
 			case 'country':
@@ -170,7 +188,7 @@ var SvgModule = (function () {
 					paramsRegionChart.sortItems = sortItemsBudget;
 				}
 				heading = "Budgets of FIFA Development projects by region";
-				drawBarChart(fifa_by_region_wide, paramsRegionChart);
+				drawBarChart(fifa_by_region, paramsRegionChart);
 			break;
 			case 'class':
 				$("#sort_div").css("display", "block");
@@ -193,7 +211,7 @@ var SvgModule = (function () {
 				$("#sort_div").css("display", "none");
 				$("#play_div").css("display", "none");
 				heading = "Budgets of FIFA Development projects by region and class";
-				drawStackedBarChart(fifa_by_region_wide, barChartParams);
+				drawStackedBarChart(fifa_by_region, barChartParams);
 			break;
 		}
 		$("#chart_heading").html(heading);
@@ -204,18 +222,18 @@ var SvgModule = (function () {
 		//get all nav buttons
 		arrNav = d3.selectAll(".playBackNav")[0];
 
-		//console.log(arrNav.length);
 		if(!playing){
+			//if press Play button
 			playing = true;
 			$("#play_button").html("Stop playing");
-			if(counter >= arrNav.length-1) counter = 0;
+			if(counter >= arrNav.length-1) counter = 0; //return counter if story were finished
 			
-			showStoryElement(arrNav[counter], arrNav[counter].__data__.desc);	
+			showStoryElement(arrNav[counter], arrNav[counter].__data__);	
 			d3.select(arrNav[counter]).attr("class","playBackNav_hover");
 			myInterval = setInterval(function(){
 				
 				d3.select(arrNav[counter]).attr("class","playBackNav");
-				setTimeout(hideStoryElement(arrNav[counter]), 500);
+				setTimeout(hideStoryElement(arrNav[counter]), 1000); //hide previous story point
 				
 				if(counter >= arrNav.length-1) {
 					playing = false;
@@ -224,19 +242,20 @@ var SvgModule = (function () {
 				}else{
 					
 					counter++;
-					d3.select(arrNav[counter]).attr("class","playBackNav_hover");				
-					showStoryElement(arrNav[counter], arrNav[counter].__data__.desc);	
+					d3.select(arrNav[counter]).attr("class","playBackNav_hover"); 				
+					showStoryElement(arrNav[counter], arrNav[counter].__data__); //show current story point	
 				}
-			}, 2000)
+			}, 5000)
 		}else{
+			//if press Stop playing
 			playing = false;
-			//console.log();
 			$("#play_button").html("Play FIFA story");
 			setTimeout(hideStoryElement( d3.select(".playBackNav_hover")[0][0] ), 500);
 			d3.select(".playBackNav_hover").attr("class","playBackNav");
 			clearInterval(myInterval);
 		}
 
+	
     }
 	
 	showStoryElement = function(obj, desc){
@@ -264,7 +283,8 @@ var SvgModule = (function () {
                             .attr("d", line(lineCoords));
 
 				var totalLength = lineGraph.node().getTotalLength();
-
+				
+				//animate line from nav to circle and tips
 				lineGraph
 				  .attr("stroke-dasharray", totalLength + " " + totalLength)
 				  .attr("stroke-dashoffset", totalLength)
@@ -279,9 +299,9 @@ var SvgModule = (function () {
 					.delay(200)
 					.style("opacity", .9);
 														
-				div_storyline_tip.html('<b>'+ desc +'</b>')  
-					.style("left", (+svgContainerPositionLeft + parseInt(circle.attr("cx")) + 20) + "px")     
-					.style("top", (+svgContainerPositionTop + parseInt(circle.attr("cy")) - 20) + "px"); 		
+				div_storyline_tip.html('<span style="font-size:16px; color:#83B51E;"><b>'+ desc.name +'</b></span><br><b>Total budget: </b>$'+text_format_long(desc.value)+'<br><b>Place(s): </b>'+desc.place+'<br><b>Description: </b>'+desc.desc)  
+					.style("left", (+svgContainerPositionLeft + parseInt(circle.attr("cx")) + 5) + "px")     
+					.style("top", (+svgContainerPositionTop + parseInt(circle.attr("cy")) +5) + "px"); 		
 	}
 	
 	hideStoryElement = function(obj){
@@ -305,8 +325,8 @@ var SvgModule = (function () {
 			.attr("x", function(d, i) { return ((i * 102) + 200); })
 			.attr("y", 10)
 			.on('mouseover', function(d) {
-				if(!playing){
-					showStoryElement(this, d.desc);
+				if(!playing){ //handle only if Play button is off
+					showStoryElement(this, d);
 				}
 			})		
 			.on("mouseout", function(d) {   
@@ -369,10 +389,6 @@ var SvgModule = (function () {
 					.style("opacity", 0);   
 			});
 
-		//–езервирование зоны дл€ playback
-		initPlayBack();
-		
-		//легенда 
 		var legend = svg.insert("g")
 			.attr("transform", "translate(230, 285)")
 			.attr("class", "legendContainer");
@@ -410,6 +426,8 @@ var SvgModule = (function () {
 			.style("fill","#CCC")
 			.style("text-anchor", "start")
 			.text("No data");		  
+
+		initPlayBack(); //draw playback on top of map
 	
 	    //draw left small bar charts
 		//Draw top15 countries
