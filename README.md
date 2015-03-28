@@ -1,7 +1,7 @@
 #Data Visualization of FIFA Development Projects
 
 ##Summary
-For this project, I’ve created a data visualization from the Goal programme data set of FIFA developments projects. 
+For this project, I’ve created a data visualization for the Goal programme data set of FIFA developments projects. 
 The Goal Programme enables beneficiary member associations to implement projects designed to develop football in their countries. 
 It is an expression of solidarity that gives national associations with few resources at their disposal the tools they need to function and grow.
 
@@ -17,20 +17,39 @@ The Goal Programme supports the following classes of projects:
 - Other
 
 I've divided my visualization on 4 tabs. On the first one you can explore overview of all projects by country.
-On the others store additional information which may explain some details of investments. 
+On the others stored additional information which may explain some details of investments. 
 
 Just press Play FIFA story button on the first tab to figure out most important points about Goal programme.
 
 ##Design
 
-###Choroplet
+###Bar chart, Stacked bar chart and color hue
+I use bar charts to show and compare different types of data. 
+It allows reader to see countries, regions and project classes and compare their total budgets and projects number. 
+In case of Budgets by region and class plot I've used stacked bar chart to explain how project classes distributed within each region.
+I use color hue and separated each class by color and explain each color in legend.
+For example, Western Europe has one of the highest budgets. Stacked bar chart explain it.  The main reason is the high cost of constructing headquarters.
+ 
+###Choropleth
+After receiving feedback I've decided to replace my plot on first tab with TOP30 countries by Choropleth.
+I think it's good tool to overview how FIFA invest money in development projects worldwide.
 
-###Color hue 
-To compare total budgets between countries I've use colors hue 
+###Color value 
+To compare total budgets between countries I've use colors value from #b5cde1 to #315b7d.
+I've match each color with total budget in legend.
 
-###Bar chart
+###Visualization improvements after feedback
+I've made some changes in my plots. 
 
-###Stacked bar chart
+- Wrangled my data and rename Football turf pitch into Football pitch and Training centres rename Football Academies. 
+- Use choropleth on first tab instead long bar chart
+- Made small bar charts with TOP 15 countries and TOP 15 budgets
+- Add navbar with most important events 
+- Add animation of "story" about most interesting projects
+- Replace not clear sort option **Budget median** by **Projects number** on the 2-nd and 3-rd  tabs
+- Change Axis labels and Bar labels text format
+- Add tips on the last tab plot (Budget by region and class)
+- Add some explanation text in storyline tips to clarify some nonobvious facts
 
 
 ##Feedback
@@ -84,20 +103,16 @@ Overall, it's a great start on your graphic, and my main takeaway is that FIFA i
 Good luck finishing your project!
 
 
-###Visualization improvements after feedback
-I've made some changes in my plots. 
-
-- Wrangled my data and rename Football turf pitch into Football pitch and Training centres rename Football Academies. 
-- Use choroplet on first tab instead long bar chart
-- Made small bar charts with TOP 15 countries and TOP 15 budgets
-- Add navbar with most important events 
-- Add animation of "story" about most interesting projects
-- Replace not clear sort option **Budget median** by **Projects number** on the 2-nd and 3-rd  tabs
-- Change Axis labels and Bar labels text format
-- Add tips on the last tab plot (Budget by region and class)
-- Add some explanation text in storyline tips to clarify some nonobvious facts
-
 ##Additional resources
+
+- http://www.jeromecukier.net/wp-content/uploads/2012/10/d3-cheat-sheet.pdf
+- http://www.jeromecukier.net/blog/2011/08/11/d3-scales-and-color/
+- http://chimera.labs.oreilly.com/books/1230000000345/ch09.html
+- http://stackoverflow.com/questions/22621865/how-to-update-an-svg-path-with-d3-js
+- http://stackoverflow.com/questions/15315125/how-do-you-stop-setinterval-after-certain-number-of-iterations
+- http://bl.ocks.org/duopixel/4063326
+- http://bl.ocks.org/zanarmstrong/b7381e04dcded29b2b6f
+
 
 
 [feedback]:[http://discussions.udacity.com/t/i-need-feedback-in-project-5/13655/5]
