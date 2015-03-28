@@ -2,18 +2,23 @@
 <html>
 <head>
 <title>Pr5</title>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/d3.min.js"></script>
 <script type="text/javascript" src="js/d3.fifa.js"></script>
 <script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/queue.v1.min.js"></script>
+<script type="text/javascript" src="js/topojson.v1.min.js"></script>  
+<script type="text/javascript" src="js/d3.tip.v0.6.3.js"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/fifa.css" />
+
 <script>
 $(document).ready(function(e) {
-	
-	drawBarChart(800,700,"budget_sum","Country","data/fifa_by_country.csv");
-	$("#sort_by").on("change", changeBar)
-	$(".tab").on("click", changeBar)
-	
-	
+//	
+SvgModule.init();
+$(".tab").on("click", SvgModule.selectGraph);
+$("#sort_by").on("change", SvgModule.selectGraph);
+$("#play_button").on("click", SvgModule.playButtonHandler);
 });
 </script>
 </head>
@@ -28,16 +33,21 @@ $(document).ready(function(e) {
 
 
 <div class="headings">
-<div style="width:150px;float:left;border-right:1px #fff dotted; height:50px;">
+<div style="width:200px;float:left;border-right:1px #fff dotted; height:50px;">
 <div id="sort_div">
-SORT:<br>
+SORT BY:<br>
 <select id="sort_by" >
-	<option value="budget_sum" selected>Budget sum</option>
-	<option value="budget_median">Budget median</option>      
+	<option value="TotalBudget" selected>Total budget</option>
+	<option value="n">Projects number</option>      
 </select>
 </div>
-</div><div><h2 id="chart_heading">Countries with TOP 30 budgets of FIFA Development projects</h2></div>
+<div id="play_div">
+<button class="btn btn-default navbar-btn" id="play_button">Play FIFA story</button>
 </div>
+</div><div><h2 id="chart_heading">Budgets of FIFA Development projects by countries</h2></div>
+</div>
+<div id="svgContainer">
 <svg class="chart"></svg>
+</div>
 </body>
 </html>

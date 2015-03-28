@@ -1,11 +1,32 @@
-.chart rect {
-  fill: steelblue;
+.fill_no_data {fill: rgb(236,236,236);}
+.q0-9 { fill:#b5cde1; }
+.q1-9 { fill:#a2c0d9; }
+.q2-9 { fill:#90b4d2; }
+.q3-9 { fill:#7da7ca; }
+.q4-9 { fill:#6a9bc3; }
+.q5-9 { fill:#588ebb; }
+.q6-9 { fill:#4682b4; }
+.q7-9 { fill:#386890; }
+.q8-9 { fill:#315b7d; }	
+
+
+.bar:hover {
+  fill: #ccc;
 }
+
 .chart text {
   fill:#fff;
-  font: 10px sans-serif;
+  font: 11px sans-serif;
   text-anchor: end;
+  font-weight:bold;
 }
+
+.chart text.barLeft{
+  fill:#fff;
+  font: 10px sans-serif;
+  text-anchor: start;
+}
+
 .axis path,
 .axis line {
     fill: none;
@@ -27,16 +48,29 @@
 }
 
 .bar {
-  fill: steelblue;
+  fill: #83B51E;
+}
+.playBackNav{
+ fill:#a2c0d9;
+}
+.playBackNav:hover, .playBackNav_hover{
+ fill:#83B51E;
+}
+
+.circleMap{
+fill:#83B51E;
+}
+.circleMap:hover{
+	fill:#83B51E;
 }
 #chart_heading{
-margin-left:150px;
+margin-left:200px;
 font-family: calibri, sans-serif;
 font-size:20px;
 }
 
 .tabs{
-width:800px;
+width:1000px;
 }
 .tabs div{
 float:left;
@@ -45,7 +79,7 @@ font-size:16px;
 }
 
 .tabs div.sel{
-width:150px;
+width:200px;
 padding: 20px 0 20px 0;
 text-align:center;
 font-weight:bold;
@@ -71,13 +105,37 @@ border-top:#ccc solid 3px;
 }
 .headings{
  clear: both;	
-width:800px;
+width:1000px;
 padding: 10px 0 5px 0;
 border-bottom: 1px solid #ccc;
-background: #CCCCFF;
+background: #DDD;
 }
 
 .headings div{
 font-family: calibri, sans-serif;
 text-align:center;
 }
+
+div.tooltip {   
+  position: absolute;           
+  text-align: center;           
+  width: 150px;                                  
+  padding: 5px;             
+  font: 12px sans-serif;        
+  background: white;   
+  border: 1px solid #ccc;                
+  pointer-events: none;
+line-height: 18px;  
+}
+#play_div{
+/*padding-top:15px;*/
+}
+.btn-default{
+background-color: #ffd700;
+
+}
+
+.btn-default:hover, .btn-default:focus, .btn-default:active{
+background-color: #ffe766;
+}
+

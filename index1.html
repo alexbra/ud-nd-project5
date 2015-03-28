@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Pr5</title>
+<script type="text/javascript" src="js/d3.min.js"></script>
+<script type="text/javascript" src="js/d3.fifa.js"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
+<link rel="stylesheet" href="css/fifa.css" />
+<script>
+$(document).ready(function(e) {
+	
+	drawBarChart(800,700,"budget_sum","Country","data/fifa_by_country.csv");
+	$("#sort_by").on("change", changeBar)
+	$(".tab").on("click", changeBar)
+	
+	
+});
+</script>
+</head>
+<body>
+<div class="tabs">
+	<div class="sel">Choose a graph</div>
+	<div class="tab active" id="country">Budget by<br>country</div>
+	<div class="tab" id="region">Budget by<br>region</div>
+	<div class="tab" id="class">Budget by<br>project class</div>
+	<div class="tab" id="region_class">Budget by<br>region and class</div>
+</div>
+
+
+<div class="headings">
+<div style="width:150px;float:left;border-right:1px #fff dotted; height:50px;">
+<div id="sort_div">
+SORT:<br>
+<select id="sort_by" >
+	<option value="budget_sum" selected>Budget sum</option>
+	<option value="budget_median">Budget median</option>      
+</select>
+</div>
+</div><div><h2 id="chart_heading">Countries with TOP 30 budgets of FIFA Development projects</h2></div>
+</div>
+<svg class="chart"></svg>
+</body>
+</html>

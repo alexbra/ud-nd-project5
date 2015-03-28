@@ -1,0 +1,83 @@
+.chart rect {
+  fill: steelblue;
+}
+.chart text {
+  fill:#fff;
+  font: 10px sans-serif;
+  text-anchor: end;
+}
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #fff;
+    shape-rendering: crispEdges;
+}
+.x.axis>.tick line {
+    fill: none;
+    stroke: #fff;
+    shape-rendering: crispEdges;
+	stroke-dasharray: 4 4;
+	stroke-width: 1;
+	stroke-opacity: .5;	
+}
+.axis text {
+    fill: #000;
+    font-family: calibri, sans-serif;
+    font-size: 12px;
+}
+
+.bar {
+  fill: steelblue;
+}
+#chart_heading{
+margin-left:150px;
+font-family: calibri, sans-serif;
+font-size:20px;
+}
+
+.tabs{
+width:800px;
+}
+.tabs div{
+float:left;
+font-family: calibri, sans-serif;
+font-size:16px;
+}
+
+.tabs div.sel{
+width:150px;
+padding: 20px 0 20px 0;
+text-align:center;
+font-weight:bold;
+color:#ccc;
+}
+
+.tabs div.tab{
+width:150px;
+padding: 10px 0 10px 0;
+text-align:center;
+cursor:pointer;
+border-top:#fff solid 3px;
+}
+
+.tabs div.tab.active{
+border-top:#ccc solid 3px;
+font-weight:bold;
+background: url(../img/gray_bg.gif);
+}
+
+.tabs div.tab:hover{
+border-top:#ccc solid 3px;
+}
+.headings{
+ clear: both;	
+width:800px;
+padding: 10px 0 5px 0;
+border-bottom: 1px solid #ccc;
+background: #CCCCFF;
+}
+
+.headings div{
+font-family: calibri, sans-serif;
+text-align:center;
+}
